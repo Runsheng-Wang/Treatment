@@ -32,12 +32,32 @@ $$ATE = \mathbb{E} \left[ Y_{1i}-Y_{0i} \right],
 $$
 如下图所示：
 
-![处置效应的密度分布](https://github.com/Runsheng-Wang/Treatment/blob/master/fig/fontp1.png?raw=true)
+![处置效应的密度分布](https://github.com/Runsheng-Wang/Treatment/blob/master/fig/ATE.png?raw=true)
 
 对于集中于均值的分布，$ATE$能够较好地代表经济政策的整体效果，但是对于分布不集中于均值的分布，我们可以直觉地认为$ATE$这个定义本身可能无法较好的刻画因果效应，因此对于这一问题，也形成了现代计量领域一个流行的分支—分位处理效应(Quantile Treatment Effect)，考虑
 $$ QTE = Q(Y_{1i}) - Q(Y_{0i}), $$
 如下图所示：
 
+![分位处置效应的一种表示](https://github.com/Runsheng-Wang/Treatment/blob/master/fig/QTE.png?raw=true)
+
+但是值得注意的是，由于$\mathbb{E}(\cdot)$作为线性算子，有很多良好的性质，例如：
+$$ \mathbb{E}\left[ aX_1 + bX_2 + c \right] = a\mathbb{E}\left[ X_1 \right] + b\mathbb{E}\left[ X_2 \right] + c. $$
+但是对于分位数我们就无法得到这样的结果，即：
+
+$$
+Q(Y_{1i} - Y_{0i}) \neq Q(Y_{1i}) - Q(Y_{0i}).
+$$
+当然分位数也具备期望算子不具备的优势，比如数据存在删失(censoring)时，例如我们会在后面介绍的 Tobit Model，分位数模型就能发挥均值模型不具备的作用。比如我们对烟草消费行为进行分析，我们观测的数据中烟草消费量$Y_i$会出现大量的$0$，但是如果我们把$Y_i>0$分析为个体对烟草的消费意愿，那么一定有很多禁烟人士的真实消费意愿$Y_i^*$是负值，但是因为数据调查的限制，禁烟人士回答$Y_i=0$。对于这种部分观测(Partially Observed)数据：
+$$ Y_i = \max \left\{ 0, Y_i^* \right\}, $$
+分位数具有如下的优势：
+$$ 
+\begin{aligned}
+    Q\left\{ Y_i \right\} &= Q\left\{ \max \{0, Y_i^*\} \right\} \\
+    &= \max \left\{ Q\{Y_i^*\}, 0 \right\} \\
+    &= \mathbb{1}\{ Y_i > 0 \}Q\{ Y_i \}.
+\end{aligned}
+$$
+当然，本系列讨论到后面，我们会对分位数处理效应和 Tobit Model 做更为深入的讨论。
 
 
 ## 识别与估计：让回归有意义 
